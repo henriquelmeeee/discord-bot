@@ -52,5 +52,13 @@ async def github(ctx):
     await ctx.send(embed = embed)
 
 
+saldo = 0
+
+@client.command()
+async def economia(ctx):
+    await ctx.send(f'Seu saldo é {saldo}.')
+    await ctx.send('A economia ainda não está disponível.')
+
+
 client.run\
     ('TOKEN')
