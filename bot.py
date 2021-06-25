@@ -1,3 +1,5 @@
+# O código a seguir foi feito por um iniciante em Python e em bibliotecas Discord.py.
+
 import sqlite3
 import time
 
@@ -39,7 +41,8 @@ async def moeda(ctx, caracoroa):
                 )
 
                 embed.set_thumbnail(url='https://gartic.com.br/imgs/mural/ja/jaqueroque/cara-ou-coroa.png')
-                await ctx.send(embed = embed)
+                msg = await ctx.send(embed = embed)
+                await msg.add_reaction('✔')
             elif res == 'coroa':
                 embed = discord.Embed(
 
@@ -52,7 +55,8 @@ async def moeda(ctx, caracoroa):
                 )
 
                 embed.set_thumbnail(url='https://gartic.com.br/imgs/mural/ja/jaqueroque/cara-ou-coroa.png')
-                await ctx.send(embed=embed)
+                msg = await ctx.send(embed=embed)
+                await msg.add_reaction('❌')
         elif caracoroa == 'coroa':
             if res == 'coroa':
                 embed = discord.Embed(
@@ -66,7 +70,8 @@ async def moeda(ctx, caracoroa):
                 )
 
                 embed.set_thumbnail(url='https://gartic.com.br/imgs/mural/ja/jaqueroque/cara-ou-coroa.png')
-                await ctx.send(embed=embed)
+                msg = await ctx.send(embed=embed)
+                await msg.add_reaction('✔')
             elif res == 'cara':
                 embed = discord.Embed(
 
@@ -120,13 +125,13 @@ async def falar(ctx, *, mensagem=None):
         if mensagem is None:
             await ctx.send('Informe um valor válido.')
         else:
-            await ctx.message.delete()
+            await ctx.message.delete() #deletar mensagem do bot
             await ctx.send(mensagem)
     else:
         await ctx.send('Você não tem permissão para executar este comando.')
 
 
-@client.command()
+@client.command(aliases=['credits', 'donodobot', 'botdono', 'donobot'])
 async def creditos(ctx):
     if ctx.author.id == 852634334909562910:
         embed = discord.Embed (
@@ -151,5 +156,89 @@ async def creditos(ctx):
         )
 
 
+@client.command(aliases=['registrar'])
+async def registro(ctx, member: discord.Member=None, opcao: str=None):
+    if ctx.author.guild_permissions.administrator:
+        try:
+            if member is None:
+                await ctx.send('Você precisa mencionar algum usuário!')
+            elif opcao is None:
+                await ctx.send('Você precisa selecionar uma opção.\n'
+                               'Digite "!veropcoes" para ver os cargos disponíveis.')
+            else:
+                if opcao == 'apoiador':
+                    apoiador = discord.utils.get(ctx.guild.roles, id=851835455858671646)
+                    await member.add_roles(apoiador)
+                    msg = await ctx.send('Cargo "Apoiador" foi setado com sucesso!')
+                    await msg.add_reaction('✔')
+        except Exception as erro:
+            print(erro)
+            await ctx.send(f'O seguinte erro ocorreu: "{erro}"')
+    else:
+        await ctx.send('Você não tem permissão para executar este comando.')
+
+@client.command(aliases=['removerole'])
+async def removercargo(ctx, member: discord.Member=None, opcao: str=None):
+    if ctx.author.guild_permissions.administrator:
+        try:
+            if member is None:
+                await ctx.send('Você precisa mencionar algum usuário!')
+            elif opcao is None:
+                await ctx.send('Você precisa selecionar uma opção.\n'
+                               'Digite "!veropcoes" para ver os cargos disponíveis.')
+            else:
+                if opcao == 'apoiador':
+                    apoiador = discord.utils.get(ctx.guild.roles, id=851835455858671646)
+                    await member.remove_roles(apoiador)
+                    msg = await ctx.send('Cargo "Apoiador" foi removido com sucesso!')
+                    await msg.add_reaction('✔')
+        except Exception as erro:
+            print(erro)
+            await ctx.send(f'O erro "{erro}" ocorreu!')
+    else:
+        await ctx.send('Você não tem permissão para executar este comando.')
+
+@client.command(aliases=['banir', 'punir', 'punish'])
+async def ban(ctx, member: discord.Member=None, motivo: str=None):
+    if ctx.author.guild_permissions.administrator:
+        try:
+            if member is None:
+                await ctx.send('Você precisa informar um usuário!')
+            elif motivo is None:
+                if ctx.author.guild_permissions.manage_guild:
+                    motivo = 'naoinformado'
+                    pass
+                else:
+                    await ctx.send('Você precisa da permissão de gerenciar servidor para banir sem motivo.')
+            else:
+                await member.ban()
+                embed = discord.Embed(
+
+                    title='BANIMENTO',
+                    description=f'O membro "{member}" foi banido por "{ctx.author}"!'
+
+
+                )
+                await ctx.send(embed = embed)
+                if motivo == 'naoinformado':
+                    embed = discord.Embed(
+
+                        description='Motivo: Não informado!'
+
+                    )
+                    await ctx.send(embed = embed)
+                else:
+                    embed = discord.Embed(
+
+                        description=f'Motivo: {motivo}!'
+
+                    )
+                    await ctx.send(embed = embed)
+        except Exception as erro:
+            print(erro)
+            await ctx.send(f'O seguinte erro ocorreu: "{erro}"')
+    else:
+        await ctx.send('Você precisa de permissão para executar este comando.')
+
 client.run\
-    ('TOKEN')
+    ('SEU_TOKEN')
