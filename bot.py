@@ -2,19 +2,20 @@ import discord
 import random
 from discord.ext import commands
 
-def msg(msg):
-    print(msg)
-
 client = commands.Bot(command_prefix='!', case_insensitive='True')
 
 
-prefixo = '!'
+from utilitarios import *
+
 
 @client.event
 async def on_ready():
+    l()
     msg('Bot online!')
     msg(f'Nome do bot: {client.user.name}')
     msg(f'ID do bot: {client.user.id}')
+    l()
+
 
 async def on_disconnect():
     msg('Bot desconectado!')
@@ -31,7 +32,13 @@ async def on_message(message):
         await message.channel.send(f'Resultado foi {random.choice(["cara", "coroa"])}!')
     else:
         pass
+    if message.content.startswith('emoji'):
+        await message.channel.send('Adicionando emoji...')
+        await message.add_reaction("⬆")
+        pass
+    else:
+        pass
 
 
 client.run\
-    ('token')
+    ('TOKEN')
