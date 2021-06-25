@@ -31,13 +31,18 @@ async def moeda(ctx, caracoroa):
         embed.set_thumbnail(url='https://gartic.com.br/imgs/mural/ja/jaqueroque/cara-ou-coroa.png')
         await ctx.send(embed = embed)
     else:
-        await ctx.send('Você deve digitar cara ou coroa após o comando!')
+        embed = discord.Embed (
+            title='',
+            description='Você deve digitar cara ou coroa após o comando!'
+
+        )
+        await ctx.send(embed = embed)
         l()
         print('Usuário digitou incorretamente.')
         print(f'Usuário digitou "{caracoroa}" e devia ser ou cara ou coroa!')
         l()
 
-@client.command()
+@client.command(aliases=['source', 'source-code', 'botsource'])
 async def github(ctx):
     embed = discord.Embed(
 
