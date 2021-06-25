@@ -1,9 +1,13 @@
+import sqlite3
+
 import discord
 import random
 from discord.ext import commands
 from discord.ext.commands import Bot
 
 client = commands.Bot(command_prefix='!', case_insensitive='True', intents=discord.Intents.all())
+
+banco = sqlite3.connect('banco.db')
 
 from utilitarios import *
 
@@ -18,18 +22,62 @@ async def on_ready():
 
 @client.command(aliases=['coroa', 'cara', 'caraoucoroa', 'jogarmoeda', 'coroaoucara'])
 async def moeda(ctx, caracoroa):
+    res = random.choice(["cara", "coroa"])
     if caracoroa == 'cara' or caracoroa == 'coroa':
-        embed = discord.Embed(
+        if caracoroa == 'cara':
+            if res == 'cara':
+                embed = discord.Embed(
 
-            title='Cara ou Coroa',
-            description=f'A moeda escolhida foi: {random.choice(["CARA", "COROA"])}\n'
-                        f'e você escolheu: {caracoroa.upper()}',
-            colour=discord.Colour.blue()
+                    title='Cara ou Coroa',
+                    description=f'A moeda escolhida foi: {res.upper()}\n'
+                                f'e você escolheu: {caracoroa.upper()}\n'
+                                f'Você ganhou!',
+                    colour=discord.Colour.blue()
 
-        )
+                )
 
-        embed.set_thumbnail(url='https://gartic.com.br/imgs/mural/ja/jaqueroque/cara-ou-coroa.png')
-        await ctx.send(embed = embed)
+                embed.set_thumbnail(url='https://gartic.com.br/imgs/mural/ja/jaqueroque/cara-ou-coroa.png')
+                await ctx.send(embed = embed)
+            elif res == 'coroa':
+                embed = discord.Embed(
+
+                    title='Cara ou Coroa',
+                    description=f'A moeda escolhida foi: {res.upper()}\n'
+                                f'e você escolheu: {caracoroa.upper()}\n'
+                                f'Você perdeu...',
+                    colour=discord.Colour.blue()
+
+                )
+
+                embed.set_thumbnail(url='https://gartic.com.br/imgs/mural/ja/jaqueroque/cara-ou-coroa.png')
+                await ctx.send(embed=embed)
+        elif caracoroa == 'coroa':
+            if res == 'coroa':
+                embed = discord.Embed(
+
+                    title='Cara ou Coroa',
+                    description=f'A moeda escolhida foi: {res.upper()}\n'
+                                f'e você escolheu: {caracoroa.upper()}\n'
+                                f'Você ganhou!',
+                    colour=discord.Colour.blue()
+
+                )
+
+                embed.set_thumbnail(url='https://gartic.com.br/imgs/mural/ja/jaqueroque/cara-ou-coroa.png')
+                await ctx.send(embed=embed)
+            elif res == 'cara':
+                embed = discord.Embed(
+
+                    title='Cara ou Coroa',
+                    description=f'A moeda escolhida foi: {res.upper()}\n'
+                                f'e você escolheu: {caracoroa.upper()}\n'
+                                f'Você perdeu...',
+                    colour=discord.Colour.blue()
+
+                )
+
+                embed.set_thumbnail(url='https://gartic.com.br/imgs/mural/ja/jaqueroque/cara-ou-coroa.png')
+                await ctx.send(embed=embed)
     else:
         embed = discord.Embed (
             title='',
@@ -59,6 +107,21 @@ async def economia(ctx):
     await ctx.send(f'Seu saldo é {saldo}.')
     await ctx.send('A economia ainda não está disponível.')
 
+
+@client.command(aliases=['a', 'suporte'])
+async def ajuda(ctx):
+    embed = discord.Embed(
+
+        author = {
+                'name': 'Some name',
+                'url': 'https://discord.js.org'
+        },
+        title='Suporte',
+        description='teste'
+
+    )
+
+    await ctx.send(embed = embed)
 
 client.run\
     ('TOKEN')
