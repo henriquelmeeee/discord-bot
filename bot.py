@@ -1,4 +1,5 @@
 import sqlite3
+import time
 
 import discord
 import random
@@ -124,5 +125,15 @@ async def ajuda(ctx):
 
     await ctx.send(embed = embed)
 
+
+@client.command(aliases=['say'])
+async def falar(ctx, *, mensagem=None):
+    if mensagem is None:
+        await ctx.send('Informe um valor válido.')
+    else:
+        await ctx.message.delete() #deletar mensagem do bot
+        await ctx.send(mensagem)
+
+
 client.run\
-    ('SEU_TOKEN')
+    ('TOKEN')
