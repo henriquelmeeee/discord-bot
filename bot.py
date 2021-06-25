@@ -23,6 +23,7 @@ async def on_ready():
 @client.command(aliases=['coroa', 'cara', 'caraoucoroa', 'jogarmoeda', 'coroaoucara'])
 async def moeda(ctx, caracoroa):
     res = random.choice(["cara", "coroa"])
+    caracoroa = caracoroa.lower()
     if caracoroa == 'cara' or caracoroa == 'coroa':
         if caracoroa == 'cara':
             if res == 'cara':
@@ -124,4 +125,4 @@ async def ajuda(ctx):
     await ctx.send(embed = embed)
 
 client.run\
-    ('TOKEN')
+    ('SEU_TOKEN')
