@@ -16,7 +16,7 @@ async def on_ready():
     l()
 
 
-@client.command(aliases=['coroa', 'cara', 'caraoucoroa', 'jogarmoeda'])
+@client.command(aliases=['coroa', 'cara', 'caraoucoroa', 'jogarmoeda', 'coroaoucara'])
 async def moeda(ctx, caracoroa):
     if caracoroa == 'cara' or caracoroa == 'coroa':
         embed = discord.Embed(
