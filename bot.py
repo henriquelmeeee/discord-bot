@@ -101,38 +101,11 @@ async def github(ctx):
     )
     await ctx.send(embed = embed)
 
-saldo = 0
-
-@client.command(aliases=['trabalho', 'job'])
-async def trabalhar(ctx):
-    global saldo
-    try:
-        if ctx.author.guild_permissions.administrator:
-            saldonovo = random.randint(15, 500)
-            saldo = saldo + saldonovo
-            await ctx.send(f'Você ganhou {saldonovo}! Agora, seu saldo é {saldo}.')
-        else:
-            await ctx.send('Por enquanto, apenas administradores podem usar esta função.')
-    except Exception as erro:
-        if ctx.author.guild_permissions.administrator:
-            await ctx.send(f'O erro "{erro}" ocorreu.')
-            await ctx.send('Cancelando ação... ')
-        else:
-            await ctx.send('Um erro ocorreu, mas você não tem permissão para vê-lo.')
-
-
-@client.command(aliases=['dinheiro'])
-async def saldo(ctx):
-    if ctx.author.guild_permissions.administrator:
-        await ctx.send(f'Seu saldo é {saldo}.')
-    else:
-        await ctx.send('Por enquanto, apenas administradores podem usar esta função.')
-
 
 @client.command(aliases=['a', 'suporte'])
 async def ajuda(ctx):
     embed = discord.Embed(
-        
+
         title='Suporte',
         description='teste'
 
@@ -151,6 +124,31 @@ async def falar(ctx, *, mensagem=None):
             await ctx.send(mensagem)
     else:
         await ctx.send('Você não tem permissão para executar este comando.')
+
+
+@client.command()
+async def creditos(ctx):
+    if ctx.author.id == 852634334909562910:
+        embed = discord.Embed (
+
+            title='Créditos',
+            description='O dono do bot é <@852634334909562910>!\n'
+                        'Você é o dono!'
+
+        )
+        await ctx.send(
+            embed = embed
+        )
+    else:
+        embed = discord.Embed(
+
+            title='Créditos',
+            description='O dono do bot é <@852634334909562910>!'
+
+        )
+        await ctx.send(
+            embed=embed
+        )
 
 
 client.run\
