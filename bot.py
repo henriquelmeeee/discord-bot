@@ -37,5 +37,15 @@ async def moeda(ctx, caracoroa):
         print(f'Usuário digitou "{caracoroa}" e devia ser ou cara ou coroa!')
         l()
 
+@client.command()
+async def github(ctx):
+    embed = discord.Embed(
+
+        title='Meu GITHUB',
+        description='https://github.com/henriquelmeeee/discord-bot/blob/main/bot.py'
+    )
+    await ctx.send(embed = embed)
+
+
 client.run\
     ('TOKEN')
