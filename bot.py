@@ -7,7 +7,6 @@ client = commands.Bot(command_prefix='!', case_insensitive='True')
 
 from utilitarios import *
 
-
 @client.event
 async def on_ready():
     l()
@@ -38,7 +37,14 @@ async def on_message(message):
         pass
     else:
         pass
+    if message.content.startswith('!verificarbot'):
+        await message.channel.send('O bot <@ID> está disponível!\n'
+        f'Nome do bot: {client.user.name}\n'
+        f'ID do bot: {client.user.id}\n'
+        'Use "!help" para ajuda.')
+    else:
+        pass
 
 
 client.run\
-    ('TOKEN')
+    ('token')
