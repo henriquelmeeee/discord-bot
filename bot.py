@@ -16,7 +16,7 @@ async def on_ready():
     l()
 
 
-@client.command()
+@client.command(aliases=['coroa', 'coroa', 'caraoucoroa', 'jogarmoeda'])
 async def moeda(ctx, caracoroa):
     embed = discord.Embed(
 
@@ -29,6 +29,6 @@ async def moeda(ctx, caracoroa):
 
     embed.set_thumbnail(url='https://gartic.com.br/imgs/mural/ja/jaqueroque/cara-ou-coroa.png')
     await ctx.send(embed = embed)
-
+    
 client.run\
     ('TOKEN')
