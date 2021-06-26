@@ -7,6 +7,7 @@ import discord
 import random
 from discord.ext import commands
 from discord.ext.commands import Bot
+from discord.utils import *
 
 client = commands.Bot(command_prefix='!', case_insensitive='True', intents=discord.Intents.all())
 
@@ -27,7 +28,7 @@ async def on_ready():
 @client.event
 async def on_member_join(member):
     guild = member.guild # Definindo "guild"
-    canal = discord.utils.get(guild.channels, id=858396490262249522) # puxando o canal e o membro
+    canal = discord.utils.get(guild.channels, id=858396490262249522)
     embed = discord.Embed(
 
         title = 'Novo membro!',
@@ -51,13 +52,6 @@ async def on_member_remove(member):
     )
 
     await canal.send(embed = embed)
-
-@client.event
-async def on_message(message):
-    if 'scam' in message.content.lower():
-        await message.delete()
-        mensagem = 'Você não pode enviar isso aqui, engraçadinho!'
-        await message.channel.send(mensagem)
 
 
 
@@ -142,18 +136,6 @@ async def github(ctx):
         title='Meu GITHUB',
         description='https://github.com/henriquelmeeee/discord-bot/blob/main/bot.py'
     )
-    await ctx.send(embed = embed)
-
-
-@client.command(aliases=['a', 'suporte'])
-async def ajuda(ctx):
-    embed = discord.Embed(
-
-        title='Suporte',
-        description='teste'
-
-    )
-
     await ctx.send(embed = embed)
 
 
@@ -294,18 +276,58 @@ async def expulsar(ctx, member: discord.Member=None, motivo=None):
         print(erro)
         await ctx.send('Um erro ocorreu! Veja o console para mais informações.')
 
-
-@client.command(alises=['clear', 'clearchat', 'limparchat', 'chatclear', 'chatlimpar', 'chatlimpo'])
-async def limpar(ctx, numero=None):
+@client.command(aliases=['limparcanal', 'limparchat', 'chatlimpar', 'clear', 'clearchat', 'chatclear'])
+async def limpar(ctx, amount : int=None):
     if ctx.author.guild_permissions.administrator:
-        if numero is None:
-            await ctx.send('Você deve informar quantas mensagens deletar!')
-        else:
-            await ctx.message.delete()
-            await ctx.send('Mensagens deletadas!')
-    else:
-        await ctx.send('Você não tem permissão para executar este comando!')
+        if amount is None:
+            await ctx.send('Digite um valor após o comando!')
+        elif amount == 0:
+            try:
+                amount : int
+                await ctx.channel.purge(limit=amount + 500000000000)
+                await ctx.send(f'Todas as mensagens foram removidas!')
 
+            except Exception as erro:
+                print(erro)
+        else:
+            try:
+                amount : int
+                if amount < 101:
+                    await ctx.channel.purge(limit=amount + 1)
+                    msg = await ctx.send(f'{amount} mensagens removidas!')
+                    await msg.add_reaction('✔')
+                else:
+                    msg = 'O valor deve ser menor que 100!\n' \
+                          'Caso queira deletar todas as mensagens, digite !limpar 0'
+                    embed = discord.Embed(
+
+                        title='Um erro ocorreu!',
+                        description=msg
+
+                    )
+
+                    msg = await ctx.send(embed=embed)
+                    await msg.add_reaction('❌')
+            except Exception as erro:
+                print(erro)
+    else:
+        await ctx.send('Sem permissão!')
+
+@client.command(aliases=['silenciar', 'mutar'])
+async def mute(ctx, member : discord.Member=None):
+    if ctx.author.guild_permissions.administrator:
+        if member is None:
+            await ctx.send('Você deve informar um membro para silenciar!')
+        else:
+            try:
+                guild = member.guild
+                cargo = discord.utils.get(ctx.guild.roles, id=858425210260291615)
+                await member.add_roles(cargo)
+                await ctx.send(f'{member.mention} silenciado com sucesso!')
+            except Exception as erro:
+                print(erro)
+    else:
+        await ctx.send('Você não tem permissão!')
 
 
 client.run\
