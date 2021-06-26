@@ -14,6 +14,7 @@ banco = sqlite3.connect('banco.db')
 
 from utilitarios import *
 
+
 @client.event
 async def on_ready():
     l()
@@ -21,6 +22,43 @@ async def on_ready():
     msg(f'Nome do bot: {client.user.name}')
     msg(f'ID do bot: {client.user.id}')
     l()
+
+
+@client.event
+async def on_member_join(member):
+    guild = member.guild # Definindo "guild"
+    canal = discord.utils.get(guild.channels, id=858396490262249522) # puxando o canal e o membro
+    embed = discord.Embed(
+
+        title = 'Novo membro!',
+        description = f'Bem vindo, {member.mention}!\n'
+                      f''
+
+    )
+    await canal.send(embed = embed)
+
+@client.event
+async def on_member_remove(member):
+    guild = member.guild
+    canal = discord.utils.get(guild.channels, id=858397258810654750)
+    embed = discord.Embed(
+
+        title = 'Até mais..',
+        description = f'O usuário {member.mention} saiu!\n'
+                      f'Sentiremos sua falta!\n'
+                      f''
+
+    )
+
+    await canal.send(embed = embed)
+
+@client.event
+async def on_message(message):
+    if 'scam' in message.content.lower():
+        await message.delete()
+        mensagem = 'Você não pode enviar isso aqui, engraçadinho!'
+        await message.channel.send(mensagem)
+
 
 
 @client.command(aliases=['coroa', 'cara', 'caraoucoroa', 'jogarmoeda', 'coroaoucara'])
@@ -71,7 +109,7 @@ async def moeda(ctx, caracoroa):
 
                 embed.set_thumbnail(url='https://gartic.com.br/imgs/mural/ja/jaqueroque/cara-ou-coroa.png')
                 msg = await ctx.send(embed=embed)
-                await msg.add_reaction('✔')
+                await msg.add_reaction('✔') # Adicionar reação
             elif res == 'cara':
                 embed = discord.Embed(
 
@@ -125,7 +163,7 @@ async def falar(ctx, *, mensagem=None):
         if mensagem is None:
             await ctx.send('Informe um valor válido.')
         else:
-            await ctx.message.delete() #deletar mensagem do bot
+            await ctx.message.delete() #deletar mensagem do usuario
             await ctx.send(mensagem)
     else:
         await ctx.send('Você não tem permissão para executar este comando.')
@@ -240,5 +278,35 @@ async def ban(ctx, member: discord.Member=None, motivo: str=None):
     else:
         await ctx.send('Você precisa de permissão para executar este comando.')
 
+@client.command()
+async def expulsar(ctx, member: discord.Member=None, motivo=None):
+    try:
+        if member is None:
+            await ctx.send('Você deve informar um usuário válido!')
+        elif motivo is None:
+            await ctx.send('Você deve informar um motivo!')
+        else:
+            await member.kick()
+            print(f'{member} expulso')
+            await ctx.send(f'O usuário {member.mention} foi expulso por {ctx.author.mention}!\n'
+                           f'Motivo: "{motivo}"')
+    except Exception as erro:
+        print(erro)
+        await ctx.send('Um erro ocorreu! Veja o console para mais informações.')
+
+
+@client.command(alises=['clear', 'clearchat', 'limparchat', 'chatclear', 'chatlimpar', 'chatlimpo'])
+async def limpar(ctx, numero=None):
+    if ctx.author.guild_permissions.administrator:
+        if numero is None:
+            await ctx.send('Você deve informar quantas mensagens deletar!')
+        else:
+            await ctx.message.delete()
+            await ctx.send('Mensagens deletadas!')
+    else:
+        await ctx.send('Você não tem permissão para executar este comando!')
+
+
+
 client.run\
-    ('SEU_TOKEN')
+    ('TOKEN')
